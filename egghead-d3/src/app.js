@@ -1,6 +1,11 @@
-var timeScale = d3.scaleTime()
-  .domain([new Date(2016, 0, 1), new Date()])
-  .range([0, 100])
+var quantizeScale = d3.scaleQuantize()
+  .domain([0, 100])
+  .range(["red", "gray", "green"])
 
-console.log(timeScale.invert(50))
-console.log(timeScale(new Date()))
+console.log(quantizeScale(1))
+console.log(quantizeScale(32))
+console.log(quantizeScale(34))
+console.log(quantizeScale(67))
+console.log(quantizeScale(100))
+
+console.log(quantizeScale.invertExtent("gray"))
