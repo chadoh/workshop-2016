@@ -1,6 +1,6 @@
-var margin = { top: 10, bottom: 25, left: 25, right: 10}
-var width = 425 - margin.left - margin.right;
-var height = 625 - margin.top - margin.bottom;
+var margin = { top: 10, right: 20, bottom: 60, left: 40 }
+var width = 425 - margin.left - margin.right
+var height = 625 - margin.top - margin.bottom
 
 var svg = d3.select('.chart')
   .append('svg')
@@ -10,14 +10,28 @@ var svg = d3.select('.chart')
     .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
 svg.append('rect')
-    .attr('width', width / 2)
+    .attr('width', width)
     .attr('height', height)
     .attr('fill', 'lightblue')
     .attr('stroke', 'green')
 
-svg.append('rect')
-    .attr('x', width / 2)
-    .attr('width', width / 2)
-    .attr('height', height)
-    .attr('fill', 'lightblue')
-    .attr('stroke', 'green')
+var yScale = d3.scaleLinear()
+  .domain([0, 100])
+  .range([height, 0])
+
+var yAxis = d3.axisLeft(yScale)
+svg.call(yAxis)
+
+var xScale = d3.scaleTime()
+  .domain([new Date(2016, 1, 1, 6), new Date(2016, 1, 1, 9)])
+  .range([0, width])
+
+var xAxis = d3.axisBottom(xScale)
+  .ticks(5)
+  .tickSizeInner(10)
+  .tickSizeOuter(20)
+  .tickPadding(15)
+svg
+  .append('g')
+    .attr('transform', `translate(0, ${height})`)
+  .call(xAxis)
