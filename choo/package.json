@@ -4,6 +4,7 @@
   "description": "A workshop on Choo.js, led by Tim Wisniewski at Barcamp Philly 2016",
   "main": "index.js",
   "scripts": {
+    "start": "budo index.js --live --open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -13,6 +14,7 @@
   "author": "Chad Ostrowski <hi@chadoh.com>",
   "license": "ISC",
   "dependencies": {
-    "choo": "^3.3.0"
+    "choo": "^3.3.0",
+    "xtend": "^4.0.1"
   }
 }
