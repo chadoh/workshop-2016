@@ -1,43 +1,21 @@
 module Main exposing (..)
 
-import Html exposing (text)
-import List
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 
-type alias Person =
-    { name : String
-    , age : Int
-    }
+numbers =
+    [ 1, 2, 3, 4, 5 ]
 
 
-people =
-    [ { name = "Legolas", age = 2931 }
-    , { name = "Gimli", age = 139 }
-    ]
+printThing : thing -> Html msg
+printThing thing =
+    ul [] [ text <| toString thing ]
 
 
-names : List Person -> List String
-names peeps =
-    List.map (\peep -> peep.name) peeps
-
-
-findPerson : String -> List Person -> Maybe Person
-findPerson name peeps =
-    List.foldl
-        (\peep memo ->
-            case memo of
-                Just _ ->
-                    memo
-
-                Nothing ->
-                    if peep.name == name then
-                        Just peep
-                    else
-                        Nothing
-        )
-        Nothing
-        peeps
+fruits =
+    [ { name = "Orange" }, { name = "Banana" } ]
 
 
 main =
-    text <| toString <| findPerson "Faramir" people
+    ul [] (List.map printThing fruits)
