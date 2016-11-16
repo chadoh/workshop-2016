@@ -1,21 +1,41 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html exposing (beginnerProgram)
+import Html.Events exposing (..)
 
 
-numbers =
-    [ 1, 2, 3, 4, 5 ]
+-- four parts
 
 
-printThing : thing -> Html msg
-printThing thing =
-    ul [] [ text <| toString thing ]
+model =
+    { showFace = False }
 
 
-fruits =
-    [ { name = "Orange" }, { name = "Banana" } ]
+type Msg
+    = ShowFace
+
+
+update msg model_ =
+    case msg of
+        ShowFace ->
+            { model_ | showFace = not model_.showFace }
+
+
+view model_ =
+    div []
+        [ h1 [] [ text "Face generator" ]
+        , button [ onClick ShowFace ] [ text "Face me" ]
+        , if model_.showFace then
+            text " ༼ ༎ຶ ෴ ༎ຶ༽"
+          else
+            text ""
+        ]
 
 
 main =
-    ul [] (List.map printThing fruits)
+    beginnerProgram
+        { model = model
+        , update = update
+        , view = view
+        }
