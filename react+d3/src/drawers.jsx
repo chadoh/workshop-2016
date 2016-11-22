@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import * as d3 from 'd3'
 
 export class Histogram extends React.Component {
@@ -51,12 +52,17 @@ export class Histogram extends React.Component {
   }
 
   render() {
+    if (this.state.bars.length === 0) {
+      return null;
+    }
+
     const translate = `translate(0, ${this.props.topMargin})`
     return (
       <g className="histogram" transform={translate}>
         <g className="bars">
           {this.state.bars.map(this.makeBar)}
         </g>
+        <Axis {...this.props} data={this.state.bars} />
       </g>
     )
   }
@@ -81,5 +87,53 @@ class HistogramBar extends React.Component {
         </text>
       </g>
     )
+  }
+}
+
+class Axis extends React.Component {
+  constructor(props) {
+    super(props);
+    this.yScale = d3.scaleLinear();
+    this.axis = d3.axisLeft(this.yScale)
+      .tickFormat(d => `$${this.yScale.tickFormat()(d)}`);
+  }
+
+  componentDidMount() {
+    this.updateD3(this.props);
+    this.renderAxis();
+  }
+
+  componentDidUpdate() {
+    this.renderAxis();
+  }
+
+  componentWillReceiveProps(props) {
+    this.updateD3(props)
+  }
+
+  updateD3 = (props) => {
+    this.yScale
+      .domain([0, d3.max(props.data.map(d => d.x1))])
+      .range([0, props.height - props.topMargin - props.bottomMargin]);
+
+    this.axis
+      .ticks(props.data.length)
+      .tickValues(
+        props.data.map(d => d.x0).concat(
+          props.data[props.data.length-1].x1
+        ));
+  }
+
+  renderAxis = () => {
+    const node = ReactDOM.findDOMNode(this);
+    d3.select(node).call(this.axis);
+  }
+
+  render() {
+    const translate = `translate(${this.props.axisMargin - 3}, 0)`;
+    return (
+      <g className="axis" transform={translate}>
+      </g>
+    );
   }
 }
